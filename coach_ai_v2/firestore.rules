@@ -1,0 +1,118 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to read and write their own profile
+    match /user_profiles/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow users to read public profiles
+    match /user_profiles/{userId} {
+      allow read: if request.auth != null && 
+        resource.data.privacy.profilePublic == true;
+    }
+    
+    // Allow users to read and write their own calendar events
+    match /calendar_events/{eventId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow users to read public calendar events
+    match /calendar_events/{eventId} {
+      allow read: if request.auth != null && 
+        resource.data.isPublic == true;
+    }
+    
+    // Allow users to read and write their own workout sessions
+    match /workout_sessions/{sessionId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow users to read public workout sessions
+    match /workout_sessions/{sessionId} {
+      allow read: if request.auth != null && 
+        resource.data.isPublic == true;
+    }
+    
+    // Allow users to read and write assessments (existing collection)
+    match /assessments/{assessmentId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write social posts
+    match /social_posts/{postId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write comments
+    match /comments/{commentId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write likes
+    match /likes/{likeId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write challenges
+    match /challenges/{challengeId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write challenge progress
+    match /challenge_progress/{progressId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write leaderboards
+    match /leaderboards/{leaderboardId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read achievements
+    match /achievements/{achievementId} {
+      allow read: if request.auth != null;
+    }
+    
+    // Allow users to read and write their own user achievements
+    match /user_achievements/{userAchievementId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow users to read and write social posts
+    match /social_posts/{postId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write workout shares
+    match /workout_shares/{shareId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write group challenges
+    match /group_challenges/{challengeId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow users to read and write their own notifications
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow users to read and write their own notification settings
+    match /notification_settings/{userId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == userId;
+    }
+    
+    // Allow users to read and write their own privacy settings
+    match /privacy_settings/{userId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == userId;
+    }
+  }
+}
